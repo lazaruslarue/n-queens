@@ -155,6 +155,12 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function(){
+      var rows = this.rows();
+      for (var i = 0; i < rows.length; i++) {
+        if(this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      };
       return false; // fixme
     },
 
@@ -164,12 +170,31 @@
     // --------------------------------------------------------------
     // 
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow){
+    hasMinorDiagonalConflictAt: function(mdci){
+      var rows = this.rows();
+      var dim = rows.length;
+      var hasFound = false;
+      for( var i = dim; i >= 0; i-- ){
+        if( rows[i] && rows[i][mdci-i] ){
+          if( hasFound ){
+            return true;
+          } else {
+            hasFound = true;
+          }
+        }
+      }
+
       return false; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function(){
+      var rows = this.rows();
+      for (var i = 0; i < rows.length; i++) {
+        if(this.hasMinorDiagonalConflictAt(i)){
+          return true;
+        }
+      }
       return false; // fixme
     }
 

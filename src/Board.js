@@ -122,6 +122,11 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function(){
+      for (var i = 0; i < this.attributes["n"]; i++) {
+        if(this.hasColConflictAt(i)){
+          return true;
+        }
+      };
       return false; // fixme
     },
 
@@ -131,7 +136,20 @@
     // --------------------------------------------------------------
     // 
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow){
+    hasMajorDiagonalConflictAt: function(mdci){
+      var rows = this.rows();
+      var dim = rows.length;
+      var hasFound = false;
+      for( var i = 0; i < dim-mdci; i++ ){
+        if( rows[i] && rows[i][mdci+i] ){
+          if( hasFound ){
+            return true;
+          } else {
+            hasFound = true;
+          }
+        }
+      }
+
       return false; // fixme
     },
 

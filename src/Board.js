@@ -79,6 +79,14 @@
     // 
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex){
+      var row = this.rows()[rowIndex];
+      
+      for (var i = 0; i < row.length; i++) {
+        if (row[i] && row.indexOf(1,i+1) !== -1) {
+          return true;
+        }
+      };
+      
       return false; // fixme
     },
 

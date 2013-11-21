@@ -27,66 +27,39 @@ window.findNRooksSolution = function(n){
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n){
   var solutionCount = undefined; //fixme
-  var Slate = function(rowsArray, rooks) {
-    Board.call(this, rowsArray);
-    this.rooks = rooks;
-  };
+  var blank = new Board({"n":n});
+  var options = findNQueensSolution(n);
 
-  Slate.prototype = new Board({"n":n});
-  Slate.prototype.constructor = Slate;
-  Slate.prototype.valid = function () {
+  
+
+
+
+
+  var doinit = function(board, depth) {
+    depth = depth || 0
     if (solutionCount === undefined) {
       solutionCount = 0;
-      var newBoard = new Slate(this.rows(), 1);
-      newBoard.valid();
     }
-    var toggleObject = {};
-    ///
-
-    
-    for (var i = 0; i < n; i++) {
-      toggleObject[i] = [];
-      for (var j = 0; j < n; j++) {
-        this.togglePiece(i,j);  
-        if (!this.hasAnyRooksConflicts()){
-          toggleObject[i].push( j);  
-        }
-        this.togglePiece(i,j);
-      }
-    }
-    // toggleArray = toggleArray.splice(0, n);
 
 
-    ///
-    if (n === this.rooks ) {
-      solutionCount++
-      return;
-    } else if (Object.keys(toggleObject).length === 0) {
-      return false;
-    } else if (Object.keys(toggleObject).length > 0 && (n >= this.rooks)) {
-      return this.toggler(toggleObject);
-    }
-  }
-  Slate.prototype.toggler = function(toggleObject) {
-    // for (var i = 0; i < toggleArray.length; i++) {
-    //   console.log(toggleArray[i][0],toggleArray[i][1])
-    //   var newBoard = new Slate(this.rows(), this.rooks);
-    //   newBoard.togglePiece(toggleArray[i][0],toggleArray[i][1]);
-    //   newBoard.rooks++;
-    //   newBoard.valid();
-    // }
-    for (var j in toggleObject) {
-      console.log(j,toggleObject[j])
-      for (var i = 0; i < toggleObject[j].length; i++) {
-        var newBoard = new Slate(this.rows(), this.rooks);
-        newBoard.togglePiece(toggleObject[j][i],j);
-        newBoard.rooks++;
-        newBoard.valid();  
-      }
+    for (var i = 0; depth < n i++) {
+      for (var i = 0; i < options.length; i++) { 
+      board.attributes[i] = options[i];
       
-    }
+      if (!board.hasAnyRooksConflicts() && depth === n) { 
+        solutionCount ++
+      } else if (depth < n) {
+        doinit(board, depth+1);
+      }
+
+    };  
+  
+
+
   };
-  Slate.prototype.valid();
+
+
+  doinit(board);
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;

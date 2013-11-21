@@ -27,17 +27,23 @@ window.findNRooksSolution = function(n){
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n){
   var solutionCount = undefined; //fixme
-  var Slate = function() { 
-    var rooks = 1;
+  var Slate = function(rowsArray, rooks) {
+    Board.call(this, rowsArray);
+    this.rooks = rooks;
   };
 
   Slate.prototype = new Board({"n":n});
-  debugger;
+  Slate.prototype.constructor = Slate;
   Slate.prototype.valid = function () {
     if (solutionCount === undefined) {
-      solutionCount = 0; 
+      solutionCount = 0;
+      var newBoard = new Slate(this.rows(), 1);
+      newBoard.valid();
     }
     var toggleArray = [];
+    ///
+
+    
     for (var i = 0; i < n; i++) {
       for (var j = 0; j < n; j++) {
         this.togglePiece(i,j);
@@ -47,24 +53,29 @@ window.countNRooksSolutions = function(n){
         this.togglePiece(i,j);
       }
     }
+
+
+
+    ///
     if (n === this.rooks ) {
       solutionCount++
+      return;
     } else if (toggleArray.length === 0) {
       return false;
-    } else if (toggleArray > 0 && (n > rooks)) {
+    } else if (toggleArray.length > 0 && (n > this.rooks)) {
+      console.log(toggleArray)
       return this.toggler(toggleArray);
     } 
   }
   Slate.prototype.toggler = function(toggleArray) {
-    this.rooks++;
+
     for (var i = 0; i < toggleArray.length; i++) {
-      this.togglePiece(toggleArray[i]);
-      this.rooks++;
-      return this.valid();
+      var newBoard = new Slate(this.rows(), this.rooks);
+      newBoard.togglePiece(toggleArray[i][0],toggleArray[i][1]);
+      newBoard.rooks++;
+      newBoard.valid();
     }
   };
-
-  Slate.prototype.togglePiece(0,0);
   Slate.prototype.valid();
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);

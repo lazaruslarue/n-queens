@@ -40,43 +40,50 @@ window.countNRooksSolutions = function(n){
       var newBoard = new Slate(this.rows(), 1);
       newBoard.valid();
     }
-    var toggleArray = [];
+    var toggleObject = {};
     ///
 
-
-
-
-
+    
     for (var i = 0; i < n; i++) {
-      // var help = this.rows()
+      toggleObject[i] = [];
       for (var j = 0; j < n; j++) {
-        this.togglePiece(j,i);  
+        this.togglePiece(i,j);  
         if (!this.hasAnyRooksConflicts()){
-          toggleArray.push([j,i]);
+          toggleObject[i].push( j);  
         }
-        this.togglePiece(j,i);
+        this.togglePiece(i,j);
       }
     }
-    toggleArray = toggleArray.splice(0, n);
+    // toggleArray = toggleArray.splice(0, n);
 
 
     ///
     if (n === this.rooks ) {
       solutionCount++
       return;
-    } else if (toggleArray.length === 0) {
+    } else if (Object.keys(toggleObject).length === 0) {
       return false;
-    } else if (toggleArray.length > 0 && (n > this.rooks)) {
-      return this.toggler(toggleArray);
-    } 
+    } else if (Object.keys(toggleObject).length > 0 && (n >= this.rooks)) {
+      return this.toggler(toggleObject);
+    }
   }
-  Slate.prototype.toggler = function(toggleArray) {
-    for (var i = 0; i < toggleArray.length; i++) {
-      console.log(toggleArray[i][0],toggleArray[i][1])
-      var newBoard = new Slate(this.rows(), this.rooks);
-      newBoard.togglePiece(toggleArray[i][0],toggleArray[i][1]);
-      newBoard.rooks++;
-      newBoard.valid();
+  Slate.prototype.toggler = function(toggleObject) {
+    // for (var i = 0; i < toggleArray.length; i++) {
+    //   console.log(toggleArray[i][0],toggleArray[i][1])
+    //   var newBoard = new Slate(this.rows(), this.rooks);
+    //   newBoard.togglePiece(toggleArray[i][0],toggleArray[i][1]);
+    //   newBoard.rooks++;
+    //   newBoard.valid();
+    // }
+    for (var j in toggleObject) {
+      console.log(j,toggleObject[j])
+      for (var i = 0; i < toggleObject[j].length; i++) {
+        var newBoard = new Slate(this.rows(), this.rooks);
+        newBoard.togglePiece(toggleObject[j][i],j);
+        newBoard.rooks++;
+        newBoard.valid();  
+      }
+      
     }
   };
   Slate.prototype.valid();

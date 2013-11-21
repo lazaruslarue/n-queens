@@ -32,8 +32,11 @@ window.countNRooksSolutions = function(n){
   };
 
   Slate.prototype = new Board({"n":n});
-
+  debugger;
   Slate.prototype.valid = function () {
+    if (solutionCount === undefined) {
+      solutionCount = 0; 
+    }
     var toggleArray = [];
     for (var i = 0; i < n; i++) {
       for (var j = 0; j < n; j++) {
@@ -44,11 +47,13 @@ window.countNRooksSolutions = function(n){
         this.togglePiece(i,j);
       }
     }
-    if (toggleArray.length === 0) {
+    if (n === this.rooks ) {
+      solutionCount++
+    } else if (toggleArray.length === 0) {
       return false;
     } else if (toggleArray > 0 && (n > rooks)) {
       return this.toggler(toggleArray);
-    }
+    } 
   }
   Slate.prototype.toggler = function(toggleArray) {
     this.rooks++;

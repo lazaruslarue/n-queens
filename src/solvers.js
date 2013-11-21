@@ -43,17 +43,21 @@ window.countNRooksSolutions = function(n){
     var toggleArray = [];
     ///
 
-    
+
+
+
+
     for (var i = 0; i < n; i++) {
+      // var help = this.rows()
       for (var j = 0; j < n; j++) {
-        this.togglePiece(i,j);
+        this.togglePiece(j,i);  
         if (!this.hasAnyRooksConflicts()){
-          toggleArray.push([i,j]);
+          toggleArray.push([j,i]);
         }
-        this.togglePiece(i,j);
+        this.togglePiece(j,i);
       }
     }
-
+    toggleArray = toggleArray.splice(0, n);
 
 
     ///
@@ -63,13 +67,12 @@ window.countNRooksSolutions = function(n){
     } else if (toggleArray.length === 0) {
       return false;
     } else if (toggleArray.length > 0 && (n > this.rooks)) {
-      console.log(toggleArray)
       return this.toggler(toggleArray);
     } 
   }
   Slate.prototype.toggler = function(toggleArray) {
-
     for (var i = 0; i < toggleArray.length; i++) {
+      console.log(toggleArray[i][0],toggleArray[i][1])
       var newBoard = new Slate(this.rows(), this.rooks);
       newBoard.togglePiece(toggleArray[i][0],toggleArray[i][1]);
       newBoard.rooks++;

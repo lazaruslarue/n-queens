@@ -74,17 +74,23 @@ window.findNQueensSolution = function(n){
 window.countNQueensSolutions = function(n){
   var solutionCount = 0; //fixme
   var findSolution = function(board, startRow) {
+      
       if (startRow === n ){
         solutionCount++;
         return;
       }
+
       for (var i = 0; i < n; i++) {
-        board.togglePiece(startRow,i);
-        if ( !board.hasAnyQueensConflicts() ){
+        board.togglePiece(i,startRow);
+        if (    !board.hasAnyColConflicts()
+             && !board.hasAnyMajorDiagonalConflicts() 
+             && !board.hasAnyMinorDiagonalConflicts()
+             && !board.hasAnyRowConflicts() 
+           ){
           findSolution(board, startRow+1);
         }
       
-        board.togglePiece(startRow,i);
+        board.togglePiece(i, startRow);
       }
     }
 
